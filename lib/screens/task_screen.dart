@@ -21,6 +21,8 @@ class _TaskScreenState extends State<TaskScreen> {
   DatabaseHelper _dbhelper = DatabaseHelper();
 
   String _taskTitle = '';
+  String _taskDescription = '';
+  String _todoText = '';
   int _taskId = 0;
   bool _contentVisibility = false;
 
@@ -36,12 +38,14 @@ class _TaskScreenState extends State<TaskScreen> {
       _contentVisibility = true;
 
       _taskTitle = widget.task.taskTitle;
+      _taskDescription = widget.task.description;
       _taskId = widget.task.id;
-
-      _titleFocus = FocusNode();
-      _descriptionFocus = FocusNode();
-      _todoFocus = FocusNode();
     }
+
+    _titleFocus = FocusNode();
+    _descriptionFocus = FocusNode();
+    _todoFocus = FocusNode();
+
     super.initState();
   }
 
@@ -104,10 +108,9 @@ class _TaskScreenState extends State<TaskScreen> {
                                 } else {
                                   await _dbhelper.updateTaskTitle(
                                       _taskId, value);
-                                  print('task updated!');
                                 }
-                                _descriptionFocus.requestFocus();
                               }
+                              _descriptionFocus.requestFocus();
                             },
                             textCapitalization: TextCapitalization.sentences,
                             controller: TextEditingController()
@@ -129,13 +132,22 @@ class _TaskScreenState extends State<TaskScreen> {
                   Visibility(
                     visible: _contentVisibility,
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
+                      padding: const EdgeInsets.only(bottom: 12.0),
                       child: TextField(
                         focusNode: _descriptionFocus,
-                        onSubmitted: (value) {
+                        onSubmitted: (value) async {
+                          if (value != "") {
+                            if (_taskId != 0) {
+                              await _dbhelper.updateTaskDescription(
+                                  _taskId, value);
+                              _taskDescription = value;
+                            }
+                          }
                           _todoFocus.requestFocus();
                         },
                         textCapitalization: TextCapitalization.sentences,
+                        controller: TextEditingController()
+                          ..text = _taskDescription,
                         decoration: InputDecoration(
                           hintText: 'Task Description',
                           hintStyle: TextStyle(color: Colors.white38),
@@ -164,8 +176,17 @@ class _TaskScreenState extends State<TaskScreen> {
                               itemCount: snapshot.data.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
-                                  onTap: () {
-                                    // Switch the todo state
+                                  onTap: () async {
+                                    //  Switch the todo state
+                                    if (snapshot.data[index].isDone == 0) {
+                                      await _dbhelper.updateTodoDone(
+                                          snapshot.data[index].id, 1);
+                                    } else {
+                                      _dbhelper.updateTodoDone(
+                                          await snapshot.data[index].id, 0);
+                                    }
+                                    setState(() {});
+                                    _todoFocus.requestFocus();
                                   },
                                   child: TodoWidget(
                                     isDone: snapshot.data[index].isDone == 0
@@ -203,20 +224,23 @@ class _TaskScreenState extends State<TaskScreen> {
                           Expanded(
                             child: TextField(
                               focusNode: _todoFocus,
+                              controller: TextEditingController()
+                                ..text = _todoText,
                               onSubmitted: (value) async {
                                 // check if the field is not empty
                                 if (value != null) {
                                   //check if the task is null
-                                  if (widget.task != null) {
+                                  if (_taskId != 0) {
                                     DatabaseHelper _dbhelper = DatabaseHelper();
 
                                     TodoModel _newTodo = TodoModel(
                                       todoTitle: value,
                                       isDone: 0,
-                                      taskId: widget.task.id,
+                                      taskId: _taskId,
                                     );
                                     await _dbhelper.insertTodo(_newTodo);
                                     setState(() {});
+                                    _todoFocus.requestFocus();
                                   }
                                 }
                               },
@@ -240,8 +264,11 @@ class _TaskScreenState extends State<TaskScreen> {
                   bottom: 32.0,
                   right: 32.0,
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
+                    onTap: () async {
+                      if (_taskId != 0) {
+                        await _dbhelper.deleteTask(_taskId);
+                        Navigator.pop(context);
+                      }
                     },
                     child: Container(
                       height: 56.0,

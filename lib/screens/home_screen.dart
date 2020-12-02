@@ -82,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               child: TaskCardWidget(
                                 taskTitle: snapshot.data[index].taskTitle,
+                                taskDescription:
+                                    snapshot.data[index].description,
                               ),
                             );
                           },
@@ -99,9 +101,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TaskScreen(
-                                task: null,
-                              )),
+                        builder: (context) => TaskScreen(
+                          task: null,
+                        ),
+                      ),
                     ).then((value) {
                       setState(() {});
                     });

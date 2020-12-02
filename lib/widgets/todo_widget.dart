@@ -31,7 +31,7 @@ class TodoWidget extends StatelessWidget {
               color: isDone ? Colors.black87 : Colors.transparent,
             ),
           ),
-          Container(
+          Flexible(
             child: Text(
               todoText ?? '(Empty TODO)',
               style: TextStyle(

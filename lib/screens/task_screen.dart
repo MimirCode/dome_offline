@@ -133,33 +133,36 @@ class _TaskScreenState extends State<TaskScreen> {
                     visible: _contentVisibility,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
-                      child: TextField(
-                        focusNode: _descriptionFocus,
-                        onSubmitted: (value) async {
-                          if (value != "") {
-                            if (_taskId != 0) {
-                              await _dbhelper.updateTaskDescription(
-                                  _taskId, value);
-                              _taskDescription = value;
+                      //TODO: has some problems and doesn't save the whole description sometimes.
+                      child: Flexible(
+                        child: TextField(
+                          focusNode: _descriptionFocus,
+                          onSubmitted: (value) async {
+                            if (value != "") {
+                              if (_taskId != 0) {
+                                await _dbhelper.updateTaskDescription(
+                                    _taskId, value);
+                                _taskDescription = value;
+                              }
                             }
-                          }
-                          _todoFocus.requestFocus();
-                        },
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: TextEditingController()
-                          ..text = _taskDescription,
-                        decoration: InputDecoration(
-                          hintText: 'Task Description',
-                          hintStyle: TextStyle(color: Colors.white38),
-                          border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 24.0),
+                            _todoFocus.requestFocus();
+                          },
+                          textCapitalization: TextCapitalization.sentences,
+                          controller: TextEditingController()
+                            ..text = _taskDescription,
+                          decoration: InputDecoration(
+                            hintText: 'Task Description',
+                            hintStyle: TextStyle(color: Colors.white38),
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 24.0),
+                          ),
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff211551),
+                              letterSpacing: 1.0),
                         ),
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff211551),
-                            letterSpacing: 1.0),
                       ),
                     ),
                   ),

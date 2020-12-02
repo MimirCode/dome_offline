@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(fontSize: 28.0),
                       ),
                       Padding(
+                        //TODO: change the padding to make it suitable for all phones.
                         padding: const EdgeInsets.fromLTRB(140, 0, 0, 14),
                         child: Image(
                           image: AssetImage('assets/dome_logo.png'),

@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        //TODO: the font doesn't work on every device.
         textTheme: GoogleFonts.ubuntuTextTheme(Theme.of(context).textTheme),
       ),
       home: HomeScreen(),

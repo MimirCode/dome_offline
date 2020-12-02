@@ -42,7 +42,7 @@ class TodoWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0),
             ),
-          )
+          ),
         ],
       ),
     );

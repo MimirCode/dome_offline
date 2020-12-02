@@ -37,8 +37,8 @@ class DatabaseHelper {
   //Update task
   Future<void> updateTaskTitle(int id, String taskTitle) async {
     Database _db = await createDatabase();
-    await _db
-        .rawUpdate("UPDATE tasks SET taskTitle = $taskTitle WHERE id = $id");
+    await _db.rawUpdate(
+        "UPDATE tasks SET taskTitle = '$taskTitle' WHERE id = '$id'");
   }
 
   //insert a todo

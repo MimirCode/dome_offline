@@ -20,7 +20,6 @@ class DatabaseHelper {
     );
   }
 
-  // ignore: missing_return
   //insert a task
   Future<int> insertTask(TaskModel taskModel) async {
     int taskId = 0;
@@ -67,6 +66,7 @@ class DatabaseHelper {
     });
   }
 
+  //get todo
   Future<List<TodoModel>> getTodos(int taskId) async {
     Database _db = await createDatabase();
     List<Map<String, dynamic>> todoMap =
@@ -79,6 +79,12 @@ class DatabaseHelper {
         isDone: todoMap[index]['isDone'],
       );
     });
+  }
+
+  //Delete the todo
+  Future<void> deleteTodo(int id) async {
+    Database _db = await createDatabase();
+    await _db.rawDelete("DELETE FROM todo WHERE taskId = '$id'");
   }
 
   //Update task description

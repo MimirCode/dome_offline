@@ -24,7 +24,7 @@ class TaskCardWidget extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             taskTitle ?? "(Unnamed task)",
             style: TextStyle(
@@ -37,7 +37,7 @@ class TaskCardWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Text(
-              taskDescription ?? 'No Description added',
+              taskDescription ?? '',
               style:
                   TextStyle(fontSize: 16.0, color: Colors.black54, height: 1.5),
             ),

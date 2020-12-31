@@ -4,6 +4,7 @@ import 'package:dome_offline/shared/constants.dart';
 import 'package:dome_offline/widgets/scroll_behaviour.dart';
 import 'package:flutter/material.dart';
 import 'package:dome_offline/widgets/card_widget.dart';
+import 'package:admob_flutter/admob_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -14,6 +15,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DatabaseHelper _databaseHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    Admob.initialize();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               Positioned(
-                bottom: 32.0,
+                bottom: 82.0,
                 right: 12.0,
                 child: GestureDetector(
                   onTap: () {
@@ -129,7 +137,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         ]),
                   ),
                 ),
-              )
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: Container(
+                  child: AdmobBanner(
+                    adUnitId: "ca-app-pub-1069097671116950/4307252384",
+                    adSize: AdmobBannerSize.FULL_BANNER,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

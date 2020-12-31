@@ -1,3 +1,4 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:dome_offline/models/task_model.dart';
 import 'package:dome_offline/models/todo_model.dart';
 import 'package:dome_offline/services/database_helper.dart';
@@ -31,6 +32,8 @@ class _TaskScreenState extends State<TaskScreen> {
   FocusNode _descriptionFocus;
   FocusNode _todoFocus;
 
+  //Admob
+
   @override
   void initState() {
     if (widget.task != null) {
@@ -41,10 +44,12 @@ class _TaskScreenState extends State<TaskScreen> {
       _taskDescription = widget.task.description;
       _taskId = widget.task.id;
     }
-
+    //focus
     _titleFocus = FocusNode();
     _descriptionFocus = FocusNode();
     _todoFocus = FocusNode();
+
+    //admob
 
     super.initState();
   }
@@ -64,10 +69,10 @@ class _TaskScreenState extends State<TaskScreen> {
       body: SafeArea(
         child: Container(
           child: Stack(
-            children: [
+            children: <Widget>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 24.0),
                     child: Row(
@@ -86,12 +91,14 @@ class _TaskScreenState extends State<TaskScreen> {
                             ),
                           ),
                         ),
+
+                        //Tilte
                         Expanded(
                           child: TextField(
                             focusNode: _titleFocus,
                             onSubmitted: (value) async {
                               // check if the field is not empty
-                              if (value != null) {
+                              if (value != '') {
                                 //check if the task is null
                                 if (widget.task == null) {
                                   DatabaseHelper _dbhelper = DatabaseHelper();
@@ -137,7 +144,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       child: Flexible(
                         child: TextField(
                           focusNode: _descriptionFocus,
-                          onSubmitted: (value) async {
+                          onChanged: (value) async {
                             if (value != "") {
                               if (_taskId != 0) {
                                 await _dbhelper.updateTaskDescription(
@@ -210,7 +217,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: Row(
-                        children: [
+                        children: <Widget>[
                           Container(
                             width: 20.0,
                             height: 20.0,
@@ -231,7 +238,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ..text = _todoText,
                               onSubmitted: (value) async {
                                 // check if the field is not empty
-                                if (value != null) {
+                                if (value != '') {
                                   //check if the task is null
                                   if (_taskId != 0) {
                                     DatabaseHelper _dbhelper = DatabaseHelper();
@@ -259,12 +266,18 @@ class _TaskScreenState extends State<TaskScreen> {
                       ),
                     ),
                   ),
+                  Container(
+                    child: AdmobBanner(
+                      adUnitId: "ca-app-pub-1069097671116950/4307252384",
+                      adSize: AdmobBannerSize.FULL_BANNER,
+                    ),
+                  ),
                 ],
               ),
               Visibility(
                 visible: _contentVisibility,
                 child: Positioned(
-                  bottom: 32.0,
+                  bottom: 76.0,
                   right: 32.0,
                   child: GestureDetector(
                     onTap: () async {
@@ -299,7 +312,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
